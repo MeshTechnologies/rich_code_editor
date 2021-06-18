@@ -1017,6 +1017,8 @@ class _RichCodeFieldState extends State<RichCodeField>
     Offset? cursorOffset;
     Color? cursorColor = widget.cursorColor;
     Radius? cursorRadius = widget.cursorRadius;
+    cursorColor ??= Theme.of(context).primaryColor;
+    cursorRadius ??= const Radius.circular(2.0);
 
     switch (themeData.platform) {
       case TargetPlatform.iOS:
@@ -1025,22 +1027,19 @@ class _RichCodeFieldState extends State<RichCodeField>
         textSelectionControls = cupertinoTextSelectionControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates = true;
-        cursorColor ??= CupertinoTheme.of(context).primaryColor;
-        cursorRadius ??= const Radius.circular(2.0);
-        cursorOffset = Offset(
-            iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
+        cursorOffset = Offset( iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
         break;
 
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
       case TargetPlatform.linux:
       case TargetPlatform.windows:
-        forcePressEnabled = false;
-        textSelectionControls = materialTextSelectionControls;
-        paintCursorAboveText = false;
-        cursorOpacityAnimates = false;
-        cursorColor ??= themeData.cursorColor;
-        break;
+      forcePressEnabled = false;
+      textSelectionControls = materialTextSelectionControls;
+      paintCursorAboveText = false;
+      cursorOpacityAnimates = false;
+      cursorOffset = Offset( iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
+      break;
     }
 
     Widget child = RepaintBoundary(
